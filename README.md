@@ -1,4 +1,4 @@
-Utilizado banco de dados Maria DB
+Utilizado banco de dados MariaDB
 
 Evidências de insert no banco de dados:
 
