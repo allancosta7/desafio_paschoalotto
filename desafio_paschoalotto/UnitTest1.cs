@@ -59,30 +59,23 @@ public class TypingTest
         // Captura as informações da tabela de resultados
         IWebElement resultTable = driver.FindElement(By.TagName("tbody"));
 
-        // Captura o valor do WPM dentro da tag <strong>
         string wpm = resultTable.FindElement(By.Id("wpm")).FindElement(By.TagName("strong")).Text;
 
-        // Captura o valor de Keystrokes_Bom da classe "correct"
         string keystrokesCorrect = resultTable.FindElement(By.Id("keystrokes")).FindElement(By.ClassName("correct")).Text;
 
-        // Captura o valor de Keystrokes_Ruim da classe "wrong"
         string keystrokesWrong = resultTable.FindElement(By.Id("keystrokes")).FindElement(By.ClassName("wrong")).Text;
 
-        // Captura o valor de Keystrokes_Total do <small>
         string keystrokesTotal = resultTable.FindElement(By.Id("keystrokes")).Text;
         keystrokesTotal = keystrokesTotal.Substring(keystrokesTotal.LastIndexOf(')') + 1).Trim();
 
-        // Captura as demais informações
         string accuracy = resultTable.FindElement(By.Id("accuracy")).Text;
         string correctWords = resultTable.FindElement(By.Id("correct")).Text;
         string wrongWords = resultTable.FindElement(By.Id("wrong")).Text;
 
-        // Extrai apenas os números de Accuracy, Correct words e Wrong words
         string accuracyValue = GetNumericValue(accuracy);
         string correctWordsValue = GetNumericValue(correctWords);
         string wrongWordsValue = GetNumericValue(wrongWords);
 
-        // Imprime as informações
         Console.WriteLine("Words per Minute: " + wpm);
         Console.WriteLine("Keystrokes_Bom: " + keystrokesCorrect);
         Console.WriteLine("Keystrokes_Ruim: " + keystrokesWrong);
@@ -97,10 +90,7 @@ public class TypingTest
         {
             connection.Open();
 
-            // Crie uma consulta SQL para inserir os dados
             string insertQuery = "INSERT INTO resultado (wpm, keystrokesCorrect, keystrokesWrong, keystrokesTotal, accuracy, correctWords, wrongWords) VALUES (@wpm, @keystrokesCorrect, @keystrokesWrong, @keystrokesTotal, @accuracy, @correctWords, @wrongWords)";
-
-            // Use um comando SQL parametrizado para evitar injeção de SQL
             using (MySqlCommand cmd = new MySqlCommand(insertQuery, connection))
             {
                 cmd.Parameters.AddWithValue("@wpm", wpm);
@@ -111,7 +101,6 @@ public class TypingTest
                 cmd.Parameters.AddWithValue("@correctWords", correctWordsValue);
                 cmd.Parameters.AddWithValue("@wrongWords", wrongWordsValue);
 
-                // Execute a consulta
                 cmd.ExecuteNonQuery();
             }
         }
